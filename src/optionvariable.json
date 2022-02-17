@@ -1,0 +1,186 @@
+[
+    {
+      "value": "Education completed in single years",
+      "label": "Education completed in single years"
+    },    
+    {
+      "value": "Has electricity",
+      "label": "Has electricity"
+    },
+    {
+      "value": "Has radio",
+      "label": "Has radio"
+    },
+    {
+      "value": "Has television",
+      "label": "Has television"
+    },
+    {
+      "value": "Has refrigerator",
+      "label": "Has refrigerator"
+    },
+    {
+      "value": "Has bicycle",
+      "label": "Has bicycle"
+    },
+    {
+      "value": "Has motorcycle/scooter",
+      "label": "Has motorcycle/scooter"
+    },
+    {
+      "value": "Has car/truck",
+      "label": "Has car/truck"
+    },
+    {
+      "value": "Sex of head of household",
+      "label": "Sex of head of household"
+    },
+    {
+      "value": "Has a landline telephone",
+      "label": "Has a landline telephone"
+    },
+    {
+      "value": "Share toilet with other households",
+      "label": "Share toilet with other households"
+    },
+    {
+      "value": "Household has separate room used as kitchen",
+      "label": "Household has separate room used as kitchen"
+    },
+    {
+      "value": "Has a mobile telephone",
+      "label": "Has a mobile telephone"
+    },
+    {
+      "value": "Owns a bank account",
+      "label": "Owns a bank account"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "Wealth index",
+      "label": "Wealth index"
+    },
+    {
+      "value": "city_clust",
+      "label": "city_clust"
+    },
+    {
+      "value": "city_hh",
+      "label": "city_hh"
+    },
+    {
+      "value": "city_obs",
+      "label": "city_obs"
+    },
+    {
+      "value": "hv109_1",
+      "label": "hv109_1"
+    },
+    {
+      "value": "hv109_2",
+      "label": "hv109_2"
+    },
+    {
+      "value": "hv109_3",
+      "label": "hv109_3"
+    },
+    {
+      "value": "hv109_4",
+      "label": "hv109_4"
+    },
+    {
+      "value": "hv109_5",
+      "label": "hv109_5"
+    },
+    {
+      "value": "hv109_6",
+      "label": "hv109_6"
+    },
+    {
+      "value": "sh_workage",
+      "label": "sh_workage"
+    },
+    {
+      "value": "piped_water",
+      "label": "piped_water"
+    },
+    {
+      "value": "piped_plot",
+      "label": "piped_plot"
+    },
+    {
+      "value": "hv201a",
+      "label": "hv201a"
+    },
+    {
+      "value": "piped_outage",
+      "label": "piped_outage"
+    },
+    {
+      "value": "Member has a birth certificate - Neither certificate or registered",
+      "label": "Member has a birth certificate - Neither certificate or registered"
+    },
+    {
+      "value": "Member has a birth certificate - Has certificate",
+      "label": "Member has a birth certificate - Has certificate"
+    },
+    {
+      "value": "Member has a birth certificate - Registered",
+      "label": "Member has a birth certificate - Registered"
+    }
+  ]
