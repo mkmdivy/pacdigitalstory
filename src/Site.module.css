@@ -251,7 +251,7 @@ margin:auto;
   font-weight: 600;
   border: none;
   padding: 6px 14px;
-  border-radius: 30px;
+  border-radius: 8px;
   text-align: center;
   display: inline-block;
   letter-spacing: 0.7px;
@@ -395,7 +395,6 @@ width:170px;
   font: 600 16px Arial;
   color: white;
   border: none;
-  width:50%;
   padding: 10px 16px;
   text-align: center;
   display: inline-block;
@@ -411,8 +410,8 @@ width:170px;
   font: 600 13px Arial;
   color: white;
   border: none;
-  width:25%;
-  padding: 10px 16px;
+  width:50;
+  padding: 2.5px 4px;
   text-align: center;
   display: inline-block;
   letter-spacing: .7px;
@@ -420,7 +419,7 @@ width:170px;
   transition: all .19s linear;
   background-color:rgba(205,205,205,.30);
   outline: none;
-  margin-bottom: 10px;
+  margin-bottom: 3px;
  }
 
  .button:hover {
@@ -441,13 +440,13 @@ width:170px;
    font: 600 17px Arial;
    color: white;
    border: none;
-   padding: 25px 38px;
+   padding: 4px 16px;
    /* text-align: center; */
    /* display: inline-block; */
    letter-spacing: .7px;
    cursor: pointer;
    transition: all .19s linear;
-   background-color: rgba(205,205,205,.1);
+   background-color: #a70000;
    outline: none;
    margin-bottom: 10px;
  }

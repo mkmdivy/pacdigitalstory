@@ -24,6 +24,7 @@ import FileSaver from "file-saver";
 
 const App = props => {
 
+
 const location = useLocation()
 const history = useHistory()
 const [getPng, { ref, isLoading }] = useCurrentPng();
@@ -39,14 +40,15 @@ const handleDownload = useCallback(async () => {
 }, [getPng]);
 
 const queryoption =[]
-const queryoptionvar =[]
 
 
-const queryparse = location.search===""?  "Angola" : queryString.parse(location.search).country 
+
+const queryparse = location.search===""?  "Africa" : queryString.parse(location.search).country 
 typeof queryparse==='string'? queryoption.push({value:queryparse,label:queryparse}) : queryparse.map(e => queryoption.push({value:e,label:e}))  
-const queryparsevar = location.search===""?  ['Education completed in single years'] : queryString.parse(location.search).type
-queryoptionvar.push({value:queryparsevar,label:queryparsevar})
+const queryparsevar = location.search===""?  'hv108' : queryString.parse(location.search).type
 
+
+const queryoptionvar ={value:queryparsevar,label:optionsvariable.map(e=>e.value===queryparsevar? e.label : null)}
 const locale = "en"
 
 const colorBasket = [
@@ -70,28 +72,44 @@ const colorBasket = [
 
 
 const [selectedOption, setSelectedOption] = useState([{value: 'Angola', label: 'Angola'}]);
-const [selectedOptionvar, setSelectedOptionvar] = useState({value: 'hv206no', label: 'Education completed in single years'});
+const [selectedOptionvar, setSelectedOptionvar] = useState({value: 'hv108', label: 'Education completed in single years'});
+const [selectedType, setSelectedType] = useState('all');
+
+
+
 const countrylist = []
 
 
 queryoption.map(d=>countrylist.push(d.value))
 
-const filteredData = data.filter(d => countrylist.includes(d.EN))
+
+
+const filteredData = data.filter(d => countrylist.includes(d.EN) && d.type === selectedType)
 const selectedData = [
   {category:0,label:'Rural'},
-  {category:10,label:'10,000 - 50,000'},
-  {category:50,label:'50,000 - 250,000'},
-  {category:250,label:'250,000 - 1,000,000'},
-  {category:1000,label:'1,000,000+'},
+  {category:10,label:'10 000 - 50 000'},
+  {category:50,label:'50 000 - 250 000'},
+  {category:250,label:'250 000 - 1,000 000'},
+  {category:1000,label:'1 000 000+'},
 ]
 
 filteredData.map(d=>
   selectedData.map(e => 
-    e.category === d.category? e[d.EN]=d[selectedOptionvar.value] : null
+    e.category === d.category? 
+      selectedType === 'all' ? 
+        e[d.EN]=d[selectedOptionvar.value] :
+        selectedType === 'sex'? 
+          d.hv219 === 'male'? 
+            e[d.EN+"_male"]=d[selectedOptionvar.value] :  
+          e[d.EN+"_female"]=d[selectedOptionvar.value] :         
+          d.AgeCategory === 0? 
+            e[d.EN+"_young"]=d[selectedOptionvar.value] : 
+            e[d.EN+"_old"]=d[selectedOptionvar.value] :
+    null 
+  
     )
   )
-
-console.log(selectedData)
+  console.log(selectedData)
 
   const styles = {    
     menu: (base, state) => {
@@ -189,9 +207,8 @@ const IndicatorsContainer = props => {
 const renderTooltip = (props) => {
   if (props.active && props.payload !== null && props.payload[0] !== null) {
     let payload = props.payload[0].payload;
-    let tooltip = null;
-    
-          tooltip = selectedOptionvar.value==='Education completed in single years'? (
+    let tooltip = null;    
+          tooltip = selectedOptionvar.label==='Education completed in single years'? (
             <div className={classes.Tooltip}>            
               {props.payload.map((i, idx) => (
                 <p
@@ -239,14 +256,6 @@ const styleVar = {
           borderRadius: 0,
           boxShadow: 0,
       }
-  },
-  option: (base, { isDisabled, isFocused, isSelected }) => {
-    return {
-      ...base,
-      backgroundColor: isDisabled ? "#a70000" : isSelected ? "#a70000" : null,
-      ':active': {
-      },
-    }
   },
   menuList: (base, state) => {
       return {
@@ -298,7 +307,20 @@ let renderLineChart = (
               language={locale} />
           <Legend />  
           {countrylist.map((d,e) => 
-            <Bar dataKey={d} fill={colorBasket[e]}  />
+            selectedType === 'all'?
+            <Bar dataKey={d} fill={colorBasket[e]}/> :
+            selectedType === 'sex'?            
+            <Bar dataKey={d+'_male'} fill={colorBasket[e]}/>                        
+            :
+            <Bar dataKey={d+'_young'} fill={colorBasket[e]}/>
+          )}     
+          {countrylist.map((d,e) => 
+            selectedType === 'all'?
+            null :
+            selectedType === 'sex'?            
+            <Bar dataKey={d+'_female'} fill={colorBasket[e+1]}/>                        
+            :
+            <Bar dataKey={d+'_old'} fill={colorBasket[e+1]}/>
           )}                
       </BarChart>
   </ResponsiveContainer>
@@ -316,7 +338,7 @@ return (
         isSearchable={false}
         isMulti 
         value={queryoption}
-        onChange={ (e,d) => handleChange(e,d,history, setSelectedOption,queryparsevar)
+        onChange={ (e,d) => handleChange(e,d,history, setSelectedOption,queryparsevar,selectedType)
           // e => pushQuery(history,{country:e[1].value})
           // setSelectedOption      
         }
@@ -325,8 +347,9 @@ return (
         components={{
           Control: () => null
         }}
-        />
+        />                
       </div>
+      
       <div className={classes.Sm_Md}>
         MobileView
       </div>
@@ -347,6 +370,9 @@ return (
             IndicatorsContainer: IndicatorsContainer
           }}
           />
+          <button className={selectedType === 'all'? classes.buttonActive : classes.button} onClick={() => handleChangeType('all',setSelectedType,history,queryparse,queryparsevar)}>All</button>
+          <button className={selectedType === 'sex'? classes.buttonActive : classes.button} onClick={() => handleChangeType('sex',setSelectedType,history,queryparse,queryparsevar)}>Male/Female</button>
+          <button className={selectedType === 'age'? classes.buttonActive : classes.button} onClick={() => handleChangeType('age',setSelectedType,history,queryparse,queryparsevar)}>Young/Old</button>
       </div>
     </div>
     <div className={classes.LineGraph}>
@@ -387,11 +413,11 @@ return (
 
 export default App;
 
-function handleChange(e, d, history, setSelectedOption,queryparsevar) {
+function handleChange(e, d, history, setSelectedOption,queryparsevar, selectedType) {
   if (e === null) {
     return;
   } else {
-    setSelectedOption(e)
+    if(selectedType !== 'all'){e=[e[e.length-1]]}
     const newCountries = e.map(d => d.value);       
     // pushQuery(history, { country: newCountries });
     history.push({
@@ -401,13 +427,11 @@ function handleChange(e, d, history, setSelectedOption,queryparsevar) {
 }
 }
 
-
 function handleChangevar(e, d, history, setSelectedOptionvar,queryparse) {
   if (e === null) {
     return;
   } else {
     setSelectedOptionvar(e)
-    // pushQuery(history, { country: newCountries });
     history.push({
         pathname: history.pathname,
         search: queryString.stringify({country:queryparse,type:e.value})  
@@ -415,24 +439,12 @@ function handleChangevar(e, d, history, setSelectedOptionvar,queryparse) {
 }
 }
 
-// function pushQuery(history, incomingQuery){
+function handleChangeType(e,setSelectedType, history,queryparse,queryparsevar) {
   
-//   const incomingQueryKey = Object.keys(incomingQuery)[0];
-//   const prevQuery = queryString.parse(history.location.search, {
-//     arrayFormat: "comma",
-//     parseNumbers: true,
-//   });
-
-//   prevQuery[incomingQueryKey] = incomingQuery[incomingQueryKey];
-
-//   const newQueries = queryString.stringify(prevQuery, {
-//     skipEmptyString: true,
-//     arrayFormat: "comma",
-//     parseNumbers: true,
-//   });
-
-//   return history.push({
-//   pathname: history.pathname,
-//   search: `?${newQueries}`,
-// })
-// }
+  const newcountry = typeof(queryparse)==="string"? queryparse : queryparse[queryparse.length-1]
+  setSelectedType(e)
+history.push({
+  pathname: history.pathname,
+  search: queryString.stringify({country:newcountry,type:queryparsevar,class:e})  
+})
+}
