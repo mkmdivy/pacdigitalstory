@@ -451,78 +451,6 @@ width:170px;
    margin-bottom: 10px;
  }
 
- .buttonW {
-  font: 600 17px Arial;
-  color: white;
-  border: none;
-  padding: 15px 25px;
-  /* text-align: center; */
-  /* display: inline-block; */
-  letter-spacing: .7px;
-  cursor: pointer;
-  transition: all .19s linear;
-  background-color: rgba(132,223,226,.6);
-  outline: none;
-  margin-bottom: 10px;
-  width:100%;
-  text-align: left;
-  min-height:130px;
-}
-
-.buttonV {
-  font: 600 17px Arial;
-  color: white;
-  border: none;
-  padding: 15px 25px;
-  text-align: left;
-  display: inline-block;
-  letter-spacing: .7px;
-  cursor: pointer;
-  transition: all .19s linear;
-  background-color: rgba(255,128,138,.6);
-  outline: none;
-  margin-bottom: 10px;
-  width:100%;
-  text-align: left;
-  min-height:130px;
-}
-
-.buttonA {
-  font: 600 17px Arial;
-  color: white;
-  border: none;
-  padding: 15px 25px;
-  /* text-align: center; */
-  /* display: inline-block; */
-  letter-spacing: .7px;
-  cursor: pointer;
-  transition: all .19s linear;
-  background-color: rgba(164, 173, 233,.6);
-  outline: none;
-  margin-bottom: 10px;
-  width:100%;
-  text-align: left;
-  min-height:130px;
-}
-
-.buttonR {
-  font: 600 17px Arial;
-  color: white;
-  border: none;
-  padding: 15px 25px;
-  /* text-align: center; */
-  /* display: inline-block; */
-  letter-spacing: .7px;
-  cursor: pointer;
-  transition: all .19s linear;
-  background-color: rgba(232,174,64,.6);
-  outline: none;
-  margin-bottom: 10px;
-  width:100%;
-  text-align: left;
-  min-height:130px;
-}
-
 .buttonW:hover {
   
   font-weight:600;
@@ -636,51 +564,6 @@ width:170px;
       visibility: hidden
       }
 
-      .button {
-       font: 600 9px Arial;
-       color: white;
-       border: none;
-       width:50%;
-       padding: 0px 0px;
-       text-align: center;
-       display: inline-block;
-       letter-spacing: .7px;
-       cursor: pointer;
-       transition: all .19s linear;
-       background-color:rgba(205,205,205,.30);
-       outline: none;
-       margin-bottom: 5px;
-      }
-
-      .button:hover {
-          color: #ffffff;
-          font-weight:600;
-          background-color:rgba(205,205,205,.95);
-          transition: all .19s linear;
-      }
-
-      .buttonActive {
-        font: 600 9px Arial;
-        color: white;
-        border: none;
-        width:50%;
-        padding: 0px 0px;
-        text-align: center;
-        display: inline-block;
-        letter-spacing: .7px;
-        cursor: pointer;
-        transition: all .19s linear;
-        background-color: #e8ae40;
-        outline: none;
-        margin-bottom: 5px;
-      }
-
-      .buttonActive:hover {
-          color: #ffffff;
-          font-weight:600;
-          background-color:rgba(205,205,205,.95);
-          transition: all .19s linear;
-      }
 
 
 @media screen and (max-height: 600px) {

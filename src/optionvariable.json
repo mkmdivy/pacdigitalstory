@@ -1,42 +1,9 @@
 [
-    {
-      "value": "hv108",
-      "label": "Education completed in single years"
-    },    
-    {
-      "value": "hv206",
-      "label": "Has electricity"
-    },
-    {
-      "value": "hv207",
-      "label": "Has radio"
-    },
-    {
-      "value": "hv208",
-      "label": "Has television"
-    },
-    {
-      "value": "hv209",
-      "label": "Has refrigerator"
-    },
-    {
-      "value": "hv210",
-      "label": "Has bicycle"
-    },
-    {
-      "value": "hv211",
-      "label": "Has motorcycle/scooter"
-    },
-    {
-      "value": "hv212",
-      "label": "Has car/truck"
-    },    
-    {
-      "value": "hv243a",
-      "label": "Has a mobile telephone"
-    },
-    {
-      "value": "hv247",
-      "label": "Owns a bank account"
-    }
-  ]
+  { "label": "Individual", "options":[{"value":"hv108","label":"Education completed in single years"},{"value":"Education","label":"Education stack bar"},{"value":"hv243a","label":"Has a mobile telephone"},{"value":"hv247","label":"Owns a bank account"}]
+  
+  },
+
+  { "label": "Household", "options":[{"value":"hv206","label":"Has electricity"},{"value":"hv207","label":"Has radio"},{"value":"hv208","label":"Has television"},{"value":"hv209","label":"Has refrigerator"},{"value":"hv210","label":"Has bicycle"},{"value":"hv211","label":"Has motorcycle/scooter"},{"value":"hv212","label":"Has car/truck"},{"value":"hv225","label":"Share toilet with other households"}]
+  
+  }
+]

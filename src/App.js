@@ -17,6 +17,7 @@ import queryString from "query-string";
 import { useLocation, useParams, useHistory } from 'react-router';
 import { useCurrentPng } from "recharts-to-png";
 import FileSaver from "file-saver";
+import { map } from 'd3';
 
 
 
@@ -42,14 +43,15 @@ const handleDownload = useCallback(async () => {
 const queryoption =[]
 
 
-
-const queryparse = location.search===""?  "Africa" : queryString.parse(location.search).country 
+const queryparse = location.search===""?  "Africa 2000-2020" : queryString.parse(location.search).country 
 typeof queryparse==='string'? queryoption.push({value:queryparse,label:queryparse}) : queryparse.map(e => queryoption.push({value:e,label:e}))  
 const queryparsevar = location.search===""?  'hv108' : queryString.parse(location.search).type
 
 
 const queryoptionvar ={value:queryparsevar,label:optionsvariable.map(e=>e.value===queryparsevar? e.label : null)}
+
 const locale = "en"
+
 
 const colorBasket = [
   "#a70000",
@@ -75,6 +77,24 @@ const [selectedOption, setSelectedOption] = useState([{value: 'Angola', label: '
 const [selectedOptionvar, setSelectedOptionvar] = useState({value: 'hv108', label: 'Education completed in single years'});
 const [selectedType, setSelectedType] = useState('all');
 
+const disableList = {
+  "hv108":["Malawi 2012","Madagascar 2011","Madagascar 2013","Angola 2011","Madagascar 2016","Burkina Faso 2014","Angola 2006","Burkina Faso 2017","Malawi 2014","Uganda 2009","Malawi 2017","Ghana 2019","Mali 2010","Liberia 2009","Mali 2015","Liberia 2016","Mozambique 2018","Uganda 2014","Rwanda 2008","Kenya 2015","Senegal 2008","Uganda 2018","Sierra Leone 2016","Liberia 2011","Tanzania 2017","Ghana 2016","Togo 2017"],	
+  "hv206":["Mali 2010"],		
+  "hv207":["Mali 2010"],		
+  "hv208":["Mali 2010"],	
+  "hv209":["Ethiopia 2000","Malawi 2000","Mali 2010"],	
+  "hv210"	:["Mali 2010"],	
+  "hv211"	:["Mali 2010"],	
+  "hv212"	:["Mali 2010"],	
+  "hv225"	:["Mali 2010","Tanzania 2003","Senegal 2008","Angola 2011","Nigeria 2010","Liberia 2009","Angola 2006","Uganda 2009"],	
+  "hv243a":["Kenya 2003","Guinea 2005","Uganda 2000","Benin 2001","Lesotho 2004","Cameroon 2004","Malawi 2000","Egypt 2003","Malawi 2004","Egypt 2005","Ethiopia 2000","Ethiopia 2005","Mali 2001","Tanzania 2003","Mali 2010","Egypt 2000","Morocco 2003","Ghana 2003","Namibia 2000","Senegal 2005","Nigeria 2003","Burkina Faso 2003","Rwanda 2005"],	
+  "hv247":["Kenya 2008","Uganda 2011","Lesotho 2004","Angola 2011","Liberia 2009","Burkina Faso 2003","Malawi 2000","Democratic Republic of the Congo 2007","Uganda 2006","Malawi 2004","Egypt 2000","Mali 2001","Egypt 2005","Mali 2006","Mali 2010","Uganda 2000","Morocco 2003","Ghana 2003","Mozambique 2009","Kenya 2003","Namibia 2000","Benin 2001","Nigeria 2003","Egypt 2003","Nigeria 2010","Ethiopia 2005","Rwanda 2005","Angola 2006","Rwanda 2008","Ethiopia 2000","Senegal 2005","Cameroon 2004","Senegal 2008","Guinea 2005","South Africa 2017"],	
+  "Education":["Malawi 2012","Madagascar 2011","Madagascar 2013","Angola 2011","Madagascar 2016","Burkina Faso 2017","Angola 2006","Malawi 2014","Malawi 2017","Ghana 2016","Mali 2010","Kenya 2015","Mali 2015","Liberia 2011","Mozambique 2018","Uganda 2018","Rwanda 2008","Uganda 2014","Senegal 2008","Liberia 2009","Sierra Leone 2016","Burkina Faso 2014","Tanzania 2017","Liberia 2016","Togo 2017","Ghana 2019","Uganda 2009"]
+}
+
+console.log(disableList["hv108"])
+options.map(e => disableList[selectedOptionvar.value].includes(e.value)? e.isDisabled=true : e.isDisabled=false)
+
 
 
 const countrylist = []
@@ -93,24 +113,40 @@ const selectedData = [
   {category:1000,label:'1 000 000+'},
 ]
 
+const eduGroup = ["complete primary","complete secondary","higher", "incomplete primary", "incomplete secondary","no education"]
+let SelectedVariable = selectedOptionvar.value
 filteredData.map(d=>
   selectedData.map(e => 
-    e.category === d.category? 
+    selectedOptionvar.value==="Education"?
+      eduGroup.map(f => 
+        e.category === d.category?       
+        selectedType === 'all' ? 
+          e[d.EN+f]=d[f] :
+          selectedType === 'sex'? 
+            d.hv219 === 'male'? 
+              e[d.EN+"_male"+f]=d[f] :  
+            e[d.EN+"_female"+f]=d[f] :         
+            d.AgeCategory === 0? 
+              e[d.EN+"_young"+f]=d[f] : 
+              e[d.EN+"_old"+f]=d[f] :
+      null                     
+        ) :
+    e.category === d.category?       
       selectedType === 'all' ? 
-        e[d.EN]=d[selectedOptionvar.value] :
+        e[d.EN]=d[SelectedVariable] :
         selectedType === 'sex'? 
           d.hv219 === 'male'? 
-            e[d.EN+"_male"]=d[selectedOptionvar.value] :  
-          e[d.EN+"_female"]=d[selectedOptionvar.value] :         
+            e[d.EN+"_male"]=d[SelectedVariable] :  
+          e[d.EN+"_female"]=d[SelectedVariable] :         
           d.AgeCategory === 0? 
-            e[d.EN+"_young"]=d[selectedOptionvar.value] : 
-            e[d.EN+"_old"]=d[selectedOptionvar.value] :
+            e[d.EN+"_young"]=d[SelectedVariable] : 
+            e[d.EN+"_old"]=d[SelectedVariable] :
     null 
   
     )
   )
-  console.log(selectedData)
 
+  
   const styles = {    
     menu: (base, state) => {
         return {
@@ -300,21 +336,32 @@ let renderLineChart = (
       >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="label" />
-          <YAxis />
+          {selectedOptionvar.value==="Education"? <YAxis domain={[0,1.05]} /> : <YAxis /> }
           <Tooltip
               cursor={{ strokeWidth: 0 }}
               content={renderTooltip}      
               language={locale} />
           <Legend />  
           {countrylist.map((d,e) => 
+            selectedOptionvar.value==="Education"?                         
+              selectedType === 'all'?
+              eduGroup.reverse().map((f,g) => <Bar dataKey={d+f} stackId='a' fill={colorBasket[g]} />) :
+              selectedType === 'sex'?            
+              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_male'+f} stackId='a' fill={colorBasket[g]} />) : 
+              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_young'+f} stackId='a' fill={colorBasket[g]} />) :
             selectedType === 'all'?
             <Bar dataKey={d} fill={colorBasket[e]}/> :
             selectedType === 'sex'?            
-            <Bar dataKey={d+'_male'} fill={colorBasket[e]}/>                        
-            :
+            <Bar dataKey={d+'_male'} fill={colorBasket[e]}/> :
             <Bar dataKey={d+'_young'} fill={colorBasket[e]}/>
           )}     
           {countrylist.map((d,e) => 
+            selectedOptionvar.value==="Education"?                         
+              selectedType === 'all'?
+              null :
+              selectedType === 'sex'?            
+              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_female'+f} stackId='b' fill={colorBasket[g]} />) : 
+              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_old'+f} stackId='b' fill={colorBasket[g]} />) :
             selectedType === 'all'?
             null :
             selectedType === 'sex'?            
@@ -338,7 +385,7 @@ return (
         isSearchable={false}
         isMulti 
         value={queryoption}
-        onChange={ (e,d) => handleChange(e,d,history, setSelectedOption,queryparsevar,selectedType)
+        onChange={ (e,d) => handleChange(e,d,history, selectedOptionvar,setSelectedOption,queryparsevar,selectedType)
           // e => pushQuery(history,{country:e[1].value})
           // setSelectedOption      
         }
@@ -363,8 +410,8 @@ return (
           options={optionsvariable} 
           className={classes.KeyFigures}
           // // isMulti 
-          value={queryoptionvar}
-          onChange={ (e,d) => handleChangevar(e,d,history, setSelectedOptionvar,queryparse) }
+          value={selectedOptionvar}
+          onChange={ (e,d) => handleChangevar(e,d,history,setSelectedOptionvar,queryparse) }
           components={{
             // IndicatorSeparator: null,
             IndicatorsContainer: IndicatorsContainer
@@ -374,12 +421,13 @@ return (
           <button className={selectedType === 'sex'? classes.buttonActive : classes.button} onClick={() => handleChangeType('sex',setSelectedType,history,queryparse,queryparsevar)}>Male/Female</button>
           <button className={selectedType === 'age'? classes.buttonActive : classes.button} onClick={() => handleChangeType('age',setSelectedType,history,queryparse,queryparsevar)}>Young/Old</button>
       </div>
+      Respondents who live in different city size
     </div>
     <div className={classes.LineGraph}>
     {renderLineChart}
     <TwitterShareButton
         url={"https://mkmdivy.github.io/pacdigitalstory/"+location.search}
-        title={"The Economic Power of Africa's cities \n" + selectedOptionvar.value + ":" + queryparse.toString() + "\n" + "Explore more here:"}
+        title={"The Economic Power of Africa's cities \n" + selectedOptionvar.label + ":" + queryparse.toString() + "\n" + "Explore more here:"}
         className="Demo__some-network__share-button">
         <TwitterIcon
           size={32}
@@ -413,11 +461,12 @@ return (
 
 export default App;
 
-function handleChange(e, d, history, setSelectedOption,queryparsevar, selectedType) {
-  if (e === null) {
+function handleChange(e, d, history, selectedOptionvar, setSelectedOption ,queryparsevar, selectedType) {
+  if (e.length === 0) {
     return;
   } else {
-    if(selectedType !== 'all'){e=[e[e.length-1]]}
+    console.log(selectedOptionvar)
+    if(selectedType !== 'all' || selectedOptionvar.value === 'Education' ){e=[e[e.length-1]]}
     const newCountries = e.map(d => d.value);       
     // pushQuery(history, { country: newCountries });
     history.push({
@@ -431,10 +480,14 @@ function handleChangevar(e, d, history, setSelectedOptionvar,queryparse) {
   if (e === null) {
     return;
   } else {
+    console.log(queryparse)    
+    let newcon = queryparse
+    if(e.value === 'Education' ){newcon = typeof(queryparse)==="string"? queryparse : [queryparse[queryparse.length-1]]}    
     setSelectedOptionvar(e)
+    console.log(newcon)
     history.push({
         pathname: history.pathname,
-        search: queryString.stringify({country:queryparse,type:e.value})  
+        search: queryString.stringify({country:newcon,type:e.value})  
     })
 }
 }
