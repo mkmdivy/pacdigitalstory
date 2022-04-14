@@ -32,7 +32,6 @@ const [getPng, { ref, isLoading }] = useCurrentPng();
 
 const handleDownload = useCallback(async () => {
   const png = await getPng();
-
   // Verify that png is not undefined
   if (png) {
     // Download with FileSaver
@@ -106,20 +105,20 @@ queryoption.map(d=>countrylist.push(d.value))
 
 const filteredData = data.filter(d => countrylist.includes(d.EN) && d.type === selectedType)
 const selectedData = [
-  {category:0,label:'Rural'},
-  {category:10,label:'10 000 - 50 000'},
-  {category:50,label:'50 000 - 250 000'},
-  {category:250,label:'250 000 - 1,000 000'},
-  {category:1000,label:'1 000 000+'},
+  {category:0,label:'Rural', samplesize:0, citysize:0},
+  {category:10,label:'10 000 - 50 000', samplesize:0, citysize:0},
+  {category:50,label:'50 000 - 250 000', samplesize:0, citysize:0},
+  {category:250,label:'250 000 - 1 000 000', samplesize:0, citysize:0},
+  {category:1000,label:'1 000 000+', samplesize:0, citysize:0},
 ]
 
-const eduGroup = ["complete primary","complete secondary","higher", "incomplete primary", "incomplete secondary","no education"]
+const eduGroup = ["no education","incomplete primary","complete primary","incomplete secondary","complete secondary","higher"]
 let SelectedVariable = selectedOptionvar.value
 filteredData.map(d=>
   selectedData.map(e => 
     selectedOptionvar.value==="Education"?
       eduGroup.map(f => 
-        e.category === d.category?       
+        e.category === d.category?               
         selectedType === 'all' ? 
           e[d.EN+f]=d[f] :
           selectedType === 'sex'? 
@@ -145,8 +144,21 @@ filteredData.map(d=>
   
     )
   )
+filteredData.map(d=>
+  selectedData.map(e =>       
+    e.category === d.category?    
+    e["samplesize"] = e["samplesize"]+d.NumberofInd : null   
+    )
+  )
+filteredData.map(d=>
+  selectedData.map(e =>       
+    e.category === d.category?    
+    e["citysize"] = e["citysize"]+d.Numberofcities : null   
+    )
+  )
 
   
+
   const styles = {    
     menu: (base, state) => {
         return {
@@ -313,7 +325,7 @@ const styleVar = {
   },
   singleValue: (base, state) => {
     return {
-      ...base,
+      ...base,      
       color: '#212529',
       textAlign: "right",
     }
@@ -322,6 +334,14 @@ const styleVar = {
     return {
       ...base,
       color: '#212529'
+    }
+  },
+  multiValue: (base, state) => {
+    return {
+      ...base,
+      color: '#212529',
+      textAlign: "right",
+      backgroundColor: '#ffffff'
     }
   }
 };
@@ -341,14 +361,15 @@ let renderLineChart = (
               cursor={{ strokeWidth: 0 }}
               content={renderTooltip}      
               language={locale} />
-          <Legend />  
+          {selectedOptionvar.value==="Education"? null : <Legend />   }
+          
           {countrylist.map((d,e) => 
             selectedOptionvar.value==="Education"?                         
               selectedType === 'all'?
-              eduGroup.reverse().map((f,g) => <Bar dataKey={d+f} stackId='a' fill={colorBasket[g]} />) :
+              eduGroup.map((f,g) => <Bar dataKey={d+f} stackId='a' fill={colorBasket[g]} />) :
               selectedType === 'sex'?            
-              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_male'+f} stackId='a' fill={colorBasket[g]} />) : 
-              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_young'+f} stackId='a' fill={colorBasket[g]} />) :
+              eduGroup.map((f,g) => <Bar dataKey={d+'_male'+f} stackId='a' fill={colorBasket[g]} />) : 
+              eduGroup.map((f,g) => <Bar dataKey={d+'_young'+f} stackId='a' fill={colorBasket[g]} />) :
             selectedType === 'all'?
             <Bar dataKey={d} fill={colorBasket[e]}/> :
             selectedType === 'sex'?            
@@ -360,8 +381,8 @@ let renderLineChart = (
               selectedType === 'all'?
               null :
               selectedType === 'sex'?            
-              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_female'+f} stackId='b' fill={colorBasket[g]} />) : 
-              eduGroup.reverse().map((f,g) => <Bar dataKey={d+'_old'+f} stackId='b' fill={colorBasket[g]} />) :
+              eduGroup.map((f,g) => <Bar dataKey={d+'_female'+f} stackId='b' fill={colorBasket[g]} />) : 
+              eduGroup.map((f,g) => <Bar dataKey={d+'_old'+f} stackId='b' fill={colorBasket[g]} />) :
             selectedType === 'all'?
             null :
             selectedType === 'sex'?            
@@ -372,6 +393,53 @@ let renderLineChart = (
       </BarChart>
   </ResponsiveContainer>
 );
+
+let buttonGroup = (
+  <div className={classes.buttonGroup}>
+    <div className={classes.datagroup}>
+      <button className={selectedType === 'all'? classes.buttonActive : classes.button} onClick={() => handleChangeType('all',setSelectedType,history,queryparse,queryparsevar)}>All</button>
+      <button className={selectedType === 'sex'? classes.buttonActive : classes.button} onClick={() => handleChangeType('sex',setSelectedType,history,queryparse,queryparsevar)}>Male/Female</button>
+      <button className={selectedType === 'age'? classes.buttonActive : classes.button} onClick={() => handleChangeType('age',setSelectedType,history,queryparse,queryparsevar)}>Young/Old</button>
+    </div>
+    <div className={classes.socialgroup}>
+      <TwitterShareButton
+        url={"https://mkmdivy.github.io/pacdigitalstory/"+location.search}
+        title={"The Economic Power of Africa's cities \n" + selectedOptionvar.label + ":" + queryparse.toString() + "\n" + "Explore more here:"}
+        className="Demo__some-network__share-button">
+        <TwitterIcon
+          size={38}
+          bgStyle={{ fill: 'white'}} iconFillColor='#00ACEE'
+          round
+           />
+      </TwitterShareButton>
+      <FacebookShareButton
+      url={"https://mkmdivy.github.io/pacdigitalstory/"+location.search}
+      title="The Economic Power of Africa's cities"
+      className="Demo__some-network__share-button">
+      <FacebookIcon 
+      size={38} 
+      bgStyle={{ fill: 'white'}} iconFillColor='#4267B2'
+      round
+      />
+      </FacebookShareButton>      
+      <i className={classes.download} onClick={handleDownload}>
+        <i className={classes["download-icon"]}> get_app </i>
+        {/* {isLoading ? 'Downloading...' : 'Download Chart'} */}
+      </i>
+      {/* <a className={classes.fullstory}      
+          href="https://oecd.org/africa-urbanisation"
+          target='_blank'
+          rel="noopener"
+          aria-label='Github'
+        >        
+          Explore the<br/> full story
+      </a>     */}
+    </div>
+</div>
+);
+
+// let menubar = (
+// );
 
   
 return (
@@ -395,14 +463,13 @@ return (
           Control: () => null
         }}
         />                
-      </div>
-      
+      </div>      
       <div className={classes.Sm_Md}>
-        MobileView
+      Mobile view
       </div>
     </div>
   </div>
-  <div className={classes.Visualisation}>
+  <div className={classes.Visualisation} >
     <div className={classes.KeyFigure__Md_Lg}>
       <div className={classes.KeyFiguresWrapper}>
           <Select 
@@ -416,43 +483,85 @@ return (
             // IndicatorSeparator: null,
             IndicatorsContainer: IndicatorsContainer
           }}
-          />
-          <button className={selectedType === 'all'? classes.buttonActive : classes.button} onClick={() => handleChangeType('all',setSelectedType,history,queryparse,queryparsevar)}>All</button>
-          <button className={selectedType === 'sex'? classes.buttonActive : classes.button} onClick={() => handleChangeType('sex',setSelectedType,history,queryparse,queryparsevar)}>Male/Female</button>
-          <button className={selectedType === 'age'? classes.buttonActive : classes.button} onClick={() => handleChangeType('age',setSelectedType,history,queryparse,queryparsevar)}>Young/Old</button>
+          
+          />      
       </div>
-      Respondents who live in different city size
+      
+      <div className={classes.Sm_Md}>        
+        <Select 
+          className={classes.KeyFigures}
+          styles={styleVar}
+          options={options}           
+          isMulti 
+          value={queryoption}
+          onChange={ (e,d) => handleChange(e,d,history, selectedOptionvar,setSelectedOption,queryparsevar,selectedType)}          
+          hideSelectedOptions={true}
+          isClearable={false}
+          />                
+      </div>      
+      {buttonGroup}
+      <div className={classes.textgroup}>
+      <br/>Respondents who live in different city size
+      </div>
+      <div className={classes.Control}>
+      {separator(selectedData.reduce((e,f) => e + f.samplesize,0))} individuals from {selectedData.slice(1,5).reduce((e,f) => e + f.citysize,0)} cities.&nbsp;
+      <div className={classes.ControlInfoS}>
+       <span className={classes.span}>More detail</span>
+        <i className={classes["material-icons"]}> info </i>
+        <div className={classes.InfoTooltipS}>
+            Number of individuals used to calculate the indicator <br/>
+            Rural: { separator(selectedData[0].samplesize) } <br/>
+            10 000 - 50 000: { separator(selectedData[1].samplesize) } <br/>
+            50 000 - 250 000: { separator(selectedData[2].samplesize) } <br/>
+            250 000 - 1M: { separator(selectedData[3].samplesize) } <br/>
+            1M+: { separator(selectedData[4].samplesize) } <br/> 
+            <br/> Number of cities used to calculate the indicator <br/>
+            10 000 - 50 000: { separator(selectedData[1].citysize) } <br/>
+            50 000 - 250 000: { separator(selectedData[2].citysize) } <br/>
+            250 000 - 1M: { separator(selectedData[3].citysize) } <br/>
+            1M+: { separator(selectedData[4].citysize) } <br/>
+            </div>
+          </div>      
+        </div>
     </div>
     <div className={classes.LineGraph}>
     {renderLineChart}
-    <TwitterShareButton
+
+    </div>
+    Please note that not all the indicators are available for every country and years. Unavailable countries and years are shaded in grey. By selecting "Africa", the latest data from available countries are displayed.
+    <div className={classes.socialgroupSM}>
+      <TwitterShareButton
         url={"https://mkmdivy.github.io/pacdigitalstory/"+location.search}
         title={"The Economic Power of Africa's cities \n" + selectedOptionvar.label + ":" + queryparse.toString() + "\n" + "Explore more here:"}
         className="Demo__some-network__share-button">
         <TwitterIcon
-          size={32}
-          round />
+          size={38}
+          bgStyle={{ fill: 'white'}} iconFillColor='#00ACEE'
+          round
+           />
       </TwitterShareButton>
       <FacebookShareButton
       url={"https://mkmdivy.github.io/pacdigitalstory/"+location.search}
       title="The Economic Power of Africa's cities"
       className="Demo__some-network__share-button">
-      <FacebookIcon size={32} round />
-      </FacebookShareButton>
-      <button onClick={handleDownload}>
-        {isLoading ? 'Downloading...' : 'Download Chart'}
-      </button>
-      <button >
-      <a
-          class='social-icon-link github'
-          href="https://pac-app-int.oecd.org/story-builder/africa-urbanisation/en/index-v2?_storyblok=112743496&_storyblok_c=page&_storyblok_tk[space_id]=81332&_storyblok_tk[timestamp]=1646752082&_storyblok_tk[token]=0fc98df47cace759570fb3b892f350afb638a34f&_storyblok_version=&_storyblok_lang=default&_storyblok_release=0#policy-actions"
+      <FacebookIcon 
+      size={38} 
+      bgStyle={{ fill: 'white'}} iconFillColor='#4267B2'
+      round
+      />
+      </FacebookShareButton>      
+      <i className={classes.download} onClick={handleDownload}>
+        <i className={classes["download-icon"]}> get_app </i>
+        {/* {isLoading ? 'Downloading...' : 'Download Chart'} */}
+      </i>
+      {/* <a className={classes.fullstory}      
+          href="https://oecd.org/africa-urbanisation"
           target='_blank'
           rel="noopener"
           aria-label='Github'
         >        
-          Explore the full story
-      </a>
-      </button>
+          Explore the<br/> full story
+      </a>     */}
     </div>
   </div>
 </div>
@@ -462,18 +571,20 @@ return (
 export default App;
 
 function handleChange(e, d, history, selectedOptionvar, setSelectedOption ,queryparsevar, selectedType) {
-  if (e.length === 0) {
-    return;
-  } else {
-    console.log(selectedOptionvar)
-    if(selectedType !== 'all' || selectedOptionvar.value === 'Education' ){e=[e[e.length-1]]}
-    const newCountries = e.map(d => d.value);       
-    // pushQuery(history, { country: newCountries });
-    history.push({
-        pathname: history.pathname,
-        search: queryString.stringify({country:newCountries,type:queryparsevar})  
-    })
-}
+  if (e) {
+    if (e.length === 0 ) {
+      return;
+    } else {
+        console.log(selectedOptionvar)
+        if(selectedType !== 'all' || selectedOptionvar.value === 'Education' ){e=[e[e.length-1]]}
+        const newCountries = e.map(d => d.value);       
+        // pushQuery(history, { country: newCountries });
+        history.push({
+            pathname: history.pathname,
+            search: queryString.stringify({country:newCountries,type:queryparsevar})  
+        })
+      }
+  }
 }
 
 function handleChangevar(e, d, history, setSelectedOptionvar,queryparse) {
@@ -500,4 +611,9 @@ history.push({
   pathname: history.pathname,
   search: queryString.stringify({country:newcountry,type:queryparsevar,class:e})  
 })
+}
+
+
+function separator(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }

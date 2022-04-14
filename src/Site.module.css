@@ -1,3 +1,18 @@
+.KeyFiguresWrapper {
+  display: flex;
+  justify-content: flex-start; 
+}
+
+.socialgroup{
+  display: flex;
+  justify-content: flex-end;   
+}
+
+.socialgroupSM{
+  display: none;
+  justify-content: flex-end;   
+}
+
 
 .Control {
   display: flex;
@@ -34,6 +49,8 @@
   font-feature-settings: 'liga';
 }
 
+
+
 .ControlInfo .InfoTooltip{
   visibility: hidden;
   width: 200px;
@@ -43,6 +60,71 @@
   position: absolute;
   z-index: 5;
   top: 110%;
+  font-size:12px;
+  font-weight: 300;
+  margin-left: -110px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.download {  
+  width: 32px;
+  height: 48.4px;
+
+}
+
+.fullstory {
+  font-size: 12px;
+  text-align: center;
+  height:32px;
+  padding-top:3px;
+  padding-left:10px;
+}
+
+.fullstory:link {  
+    text-decoration: none;  
+}
+
+.download-icon {
+  font-family: 'Material Icons';
+  font-weight: normal;  
+  font-style: normal;
+  padding-top:10px;
+  padding-left:3px;
+  position:absolute;
+  font-size: 25px;  /* Preferred icon size */
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+  color: #b1b1b1;
+  cursor: default;
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+.span {
+  color:#5b5d62;
+}
+
+.ControlInfoS .InfoTooltipS{
+  visibility: hidden;
+  width: 270px;
+  background-color: #5b5d62;  
+  color: #fff;
+  padding: 10px 10px;
+  position: absolute;
+  z-index: 5;
+  top: 20%;
   font-size:12px;
   font-weight: 300;
   margin-left: -110px;
@@ -69,10 +151,27 @@
   /* border-color: #5B5D62 transparent transparent transparent; */
 }
 
+
+.InfoTooltipS p {
+  margin: 0;
+}
+
+.InfoTooltipS span {
+  font-weight: 600;
+}
+
+
+
 .ControlInfo:hover .InfoTooltip {
   visibility: visible;
   opacity: 1;
 }
+
+.ControlInfoS:hover .InfoTooltipS {
+  visibility: visible;
+  opacity: 1;
+}
+
 
 .ControlInfo:hover .material-icons{
   color:#5B5D62;
@@ -98,13 +197,25 @@
 }
 
 @media (max-width: 752px) { 
+  .KeyFiguresWrapper {
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+}
   .Visualisation { 
       width: 100%;
       box-sizing: border-box;
+  }  
+  .textgroup{
+    padding-left: 10px;
+    font-size: 13px;
   }
-  .KeyFigure__Md_Lg {
-      display: none;
+
+  .Control {
+    padding-left: 10px;
+    font-size: 13px;
   }
+  
 }
 .Layout {
   background-color: #ffffff;
@@ -145,14 +256,32 @@
   }
   .Sm_Md {
       display: flex;
+      padding: 0 10px;
+      box-sizing: border-box;
+    
       
   }
+  .socialgroup {
+    display: none;
+}
+
+.socialgroupSM{
+  display: flex;
+  justify-content: flex-end;   
+}
+
 }
 
 @media (max-width: 450px) { 
   .Sm_Md {
       flex-flow: column;
   }
+
+  .KeyFiguresWrapper {
+    width: 100%;
+}
+
+
 
 }
 
@@ -162,6 +291,11 @@
   .SearchBar {
       width: 50%;
   }
+
+.datagroup {
+  padding-left:10px;
+}
+
 }
 
 .SearchBar__Sm {
@@ -175,11 +309,22 @@
   .SearchBar__Sm {
       width: 100%;
   }
+  .buttonGroup{
+    /* height:30px;
+    width:100%;   */
+    display: flex;
+
+  }
   
 }
 
 
-
+.buttonGroup{
+  height:30px;
+  /* width:100%;   */
+  display: grid;
+  grid-template-columns: 3fr 1fr;  
+}
 
 
 .keybutton{
@@ -213,6 +358,9 @@
   color: var(--ytd-user-comment_-_color);
 }
 
+
+
+
 .header{
   text-align: center;
   align-items: center;
@@ -235,32 +383,12 @@ width:40%;
 margin:auto;
 }
 
-.main {
-
-
-}
 .TableHeader {
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 30px;
-}
-.button {
-  font-size: 1rem;
-  font-weight: 600;
-  border: none;
-  padding: 6px 14px;
-  border-radius: 8px;
-  text-align: center;
-  display: inline-block;
-  letter-spacing: 0.7px;
-  cursor: pointer;
-  background-color: #c3533e;
-  border: 2px solid #c3533e;
-  color: white;
-  transition: all 0.19s linear;
-  outline: none;
 }
 
 .button:hover {
@@ -287,35 +415,6 @@ margin:auto;
   bottom: 0;
 }
 
-.mapContainerhidden {
-  display:none;  
-}
-
-.topleft{
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  right: 0;
-  margin: 12px;
-  background-color: rgba(43,43,43,.95);
-  color: #ffffff;
-  z-index: 1 !important;
-  padding: 6px;
-  width:330px;
-}
-
-.topleft span{
-font: 400 10px Arial;
-}
-
-.topleft headtitle{
-  font: 400 30px Arial;
-  color: #e8ae40;
-  font-weight: bold;
-}
-
-
-
 .legend{
   display: inline-block;
   position: absolute;
@@ -330,49 +429,12 @@ font: 400 10px Arial;
   width:150px;
 }
 
-.legend h4 {
-font:400 19px Arial;
-margin: 0 0 10px;
-}
-
-.legend div span {
-display: inline-block;
-height: 10px;
-margin-right: 5px;
-width: 10px;
-font:400 10px Arial;
-}
-
-.legend small {
-font: 400 12px Arial;
-}
-
-.table{
-text-align: left;
-margin-top: 10px;
-width: 100%;
-font: 400 15.3333px Arial;
-}
-
-.table th{
-font: 600 16.3333px Arial;
-}
-
-.table td{
-
-}
-
 .Tooltip {
   background-color: rgba(255, 255, 255, 0.8);
   margin-left: 10px;
   margin-right: 10px;
   font-weight: 400;
 }
-
-
-.regionsel {
-color: #e8ae40;
-  }
 
 
 .popup {
@@ -383,28 +445,22 @@ color: #e8ae40;
 
 }
 
-.logo {
-position:absolute;
-z-index: 3;
-bottom: 0;
-left:100px;
-width:170px;
-}
-
  .button {
-  font: 600 16px Arial;
+  font: 600 14px Arial;
   color: white;
   border: none;
-  padding: 10px 16px;
+  padding: 5px 8px;
   text-align: center;
   display: inline-block;
   letter-spacing: .7px;
   cursor: pointer;
   transition: all .19s linear;
-  background-color:rgba(205,205,205,.30);
+  background-color:rgba(205,205,205,.95);
   outline: none;
   margin-bottom: 10px;
  }
+
+
 
  .buttondist {
   font: 600 13px Arial;
@@ -417,7 +473,7 @@ width:170px;
   letter-spacing: .7px;
   cursor: pointer;
   transition: all .19s linear;
-  background-color:rgba(205,205,205,.30);
+  background-color:rgba(205,205,205,.95);
   outline: none;
   margin-bottom: 3px;
  }
@@ -425,19 +481,19 @@ width:170px;
  .button:hover {
      color: #ffffff;
      font-weight:600;
-     background-color:rgba(205,205,205,.95);
+     background-color:rgba(205,205,205,.30);
      transition: all .19s linear;
  }
 
  .buttondist:hover {
   color: #ffffff;
   font-weight:600;
-  background-color:rgba(205,205,205,.95);
+  background-color:rgba(205,205,205,.30);
   transition: all .19s linear;
 }
 
  .buttonActive {
-   font: 600 17px Arial;
+   font: 600 15px Arial;
    color: white;
    border: none;
    padding: 4px 16px;
@@ -451,33 +507,6 @@ width:170px;
    margin-bottom: 10px;
  }
 
-.buttonW:hover {
-  
-  font-weight:600;
-  background-color: rgba(132,223,226,.9);
-  transition: all .19s linear;
-}
-
-.buttonV:hover {
-  color: #ffffff;
-  font-weight:600;
-  background-color:rgba(255,128,138,.9);
-  transition: all .19s linear;
-}
-
-.buttonA:hover {
-  color: #ffffff;
-  font-weight:600;
-  background-color:rgba(164, 173, 233,.9);
-  transition: all .19s linear;
-}
-
-.buttonR:hover {
-  color: #ffffff;
-  font-weight:600;
-  background-color:rgba(232,174,64,.9);
-  transition: all .19s linear;
-}
 
 
 
@@ -497,9 +526,6 @@ width:170px;
         font: 400 6.6px Arial;
       }
 
-      .topleft span{
-      font: 400 9.6px Arial;
-      }
 
       .topleft headtitle{
         font: 400 16px Arial;

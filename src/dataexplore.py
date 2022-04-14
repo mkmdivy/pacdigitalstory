@@ -48,6 +48,16 @@ datam['Population'] = datam['Population'].fillna(0)
 datam['category'] = pd.cut(datam.Population,bins=[-1,9999,50000,250000,1000000,999999999999999999],labels=[0,10,50,250,1000])
 datam['AgeCategory'] = pd.cut(datam.agebin,bins=[-1,30,150],labels=[0,30])
 
+################ To run calculate Africa correctly 
+# datam['ctry'] = datam.key.str[:2]
+# maxfilter = datam.groupby(['ctry'])['year'].max()
+# maxfilter.to_csv('c:/mywork/temp.csv')
+# maxfilter = pd.read_csv('c:/mywork/temp.csv')
+# filterlist = maxfilter.ctry+maxfilter.year.astype(str)
+# datam = datam[datam['key'].isin(filterlist)]
+
+
+##################################################
 
 unique_individuals = pd.pivot_table(datam, values='source' , index=['key','category','hv219','AgeCategory'],  aggfunc='count')
 unique_individuals.to_csv('c:/mywork/uniqueind.csv')
@@ -56,6 +66,38 @@ unique_individuals = pd.read_csv('c:/mywork/uniqueind.csv')
 unique_cities = pd.pivot_table(datam, values='afpid' , index=['key','category','hv219','AgeCategory'],  aggfunc=pd.Series.nunique)
 unique_cities.to_csv('c:/mywork/temp.csv')
 unique_cities = pd.read_csv('c:/mywork/temp.csv')
+
+
+
+
+
+######## Calculate numbers for whole Africa
+unique_individualsAF = pd.pivot_table(datam, values='source' , index=['category','AgeCategory'],  aggfunc='count')
+unique_individualsAF.to_csv('c:/mywork/uniqueindAF.csv')
+unique_individualsAF = pd.read_csv('c:/mywork/uniqueindAF.csv')
+
+unique_citiesAF = pd.pivot_table(datam, values='afpid' , index=['category','AgeCategory'],  aggfunc=pd.Series.nunique)
+unique_citiesAF.to_csv('c:/mywork/tempAF.csv')
+unique_citiesAF = pd.read_csv('c:/mywork/tempAF.csv')
+
+unique_individualsAF = pd.pivot_table(datam, values='source' , index=['category','hv219'],  aggfunc='count')
+unique_individualsAF.to_csv('c:/mywork/uniqueindAF.csv')
+unique_individualsAF = pd.read_csv('c:/mywork/uniqueindAF.csv')
+
+unique_citiesAF = pd.pivot_table(datam, values='afpid' , index=['category','hv219'],  aggfunc=pd.Series.nunique)
+unique_citiesAF.to_csv('c:/mywork/tempAF.csv')
+unique_citiesAF = pd.read_csv('c:/mywork/tempAF.csv')
+
+unique_individualsAF = pd.pivot_table(datam, values='source' , index=['category'],  aggfunc='count')
+unique_individualsAF.to_csv('c:/mywork/uniqueindAF.csv')
+unique_individualsAF = pd.read_csv('c:/mywork/uniqueindAF.csv')
+
+unique_citiesAF = pd.pivot_table(datam, values='afpid' , index=['category'],  aggfunc=pd.Series.nunique)
+unique_citiesAF.to_csv('c:/mywork/tempAF.csv')
+unique_citiesAF = pd.read_csv('c:/mywork/tempAF.csv')
+
+
+########
 
 unique_individuals = unique_individuals.merge(unique_cities, how='left')
 
